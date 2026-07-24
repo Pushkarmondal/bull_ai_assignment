@@ -17,9 +17,9 @@ export const Button: React.FC<ButtonProps> = ({
   const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer px-6 py-3.5 text-sm sm:text-base active:scale-[0.97]';
   
   const variants = {
-    primary: 'gradient-teal text-white shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/30 hover:brightness-110 shimmer-effect',
-    secondary: 'bg-slate-900/90 text-slate-200 border border-slate-750 hover:bg-slate-800 hover:text-white hover:border-slate-600 shadow-md',
-    outline: 'border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-400 shadow-sm',
+    primary: 'gradient-teal text-white shadow-lg shadow-emerald-900/20 dark:shadow-emerald-950/50 hover:shadow-emerald-500/30 hover:brightness-110 shimmer-effect',
+    secondary: 'bg-white dark:bg-slate-900/90 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-750 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-600 shadow-md',
+    outline: 'border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500 shadow-sm',
   };
 
   return (
