@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { FileText, Download, Eye, AlertCircle, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { FileText, Download, Eye, AlertCircle, RefreshCw, CheckCircle2, Sparkles, Layers, FileCheck2 } from 'lucide-react';
 import { Card } from '../common/Card';
 import { Button } from '../common/Button';
 import { UploadZone } from './UploadZone';
@@ -132,51 +132,60 @@ export const ReportForm: React.FC = () => {
       )}
 
       <Card>
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800/80">
           <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <h2 className="text-xl font-extrabold text-white flex items-center gap-2.5 tracking-tight">
               <FileText className="w-5 h-5 text-emerald-400" />
               Generate Financial Research Report
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
-              Upload company context files to auto-generate a downloadable 4-page Geojit equity report.
+            <p className="text-xs text-slate-400 mt-1 font-medium">
+              Upload earnings context files to extract structured data & produce a downloadable 4-page PDF.
             </p>
           </div>
           {result && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <CheckCircle2 className="w-4 h-4" /> Ready
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shadow-sm animate-fade-in">
+              <CheckCircle2 className="w-4 h-4" /> Ready for Download
             </span>
           )}
         </div>
 
         {apiError && (
-          <div className="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-start gap-3">
+          <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-start gap-3.5 shadow-lg shadow-rose-950/20 animate-fade-in">
             <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
             <div className="text-sm">
-              <p className="font-semibold">Report Generation Error</p>
-              <p className="text-xs opacity-90 mt-0.5">{apiError}</p>
+              <p className="font-bold text-rose-300">Report Generation Error</p>
+              <p className="text-xs opacity-90 mt-1 leading-relaxed">{apiError}</p>
             </div>
           </div>
         )}
 
         {result ? (
-          <div className="text-center py-8">
-            <div className="w-16 h-16 rounded-2xl gradient-teal text-white flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/20">
-              <CheckCircle2 className="w-10 h-10" />
+          <div className="text-center py-8 animate-fade-in">
+            <div className="w-20 h-20 rounded-3xl gradient-teal text-white flex items-center justify-center mx-auto mb-5 shadow-2xl shadow-emerald-500/30 border border-emerald-400/30 animate-float">
+              <FileCheck2 className="w-10 h-10" />
             </div>
 
-            <h3 className="text-2xl font-extrabold text-white mb-2">
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 tracking-tight">
               Report Generated Successfully!
             </h3>
-            <p className="text-slate-400 text-sm max-w-md mx-auto mb-8">
-              Geojit-style research report for <strong className="text-emerald-400">{result.companyName}</strong> is ready for review and download.
+            <p className="text-slate-400 text-sm max-w-md mx-auto mb-6 leading-relaxed">
+              Authentic 4-page Geojit-style research report for <strong className="text-emerald-400 font-bold">{result.companyName}</strong> is ready for review and download.
             </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+              <span className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-cyan-400" /> 4-Page PDF Report
+              </span>
+              <span className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Vector SVG Charts
+              </span>
+            </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
               <button
                 type="button"
                 onClick={() => setIsPreviewOpen(true)}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 hover:text-white transition-all font-medium text-sm cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900 text-slate-200 border border-slate-700/80 hover:bg-slate-800 hover:text-white hover:border-slate-600 transition-all font-semibold text-sm cursor-pointer shadow-lg active:scale-95"
               >
                 <Eye className="w-4 h-4 text-cyan-400" />
                 Preview PDF Report
@@ -192,7 +201,7 @@ export const ReportForm: React.FC = () => {
               <button
                 type="button"
                 onClick={handleReset}
-                className="inline-flex items-center gap-1.5 px-4 py-3 text-xs text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 py-3.5 text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 Generate Another
@@ -209,17 +218,17 @@ export const ReportForm: React.FC = () => {
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-slate-200 mb-2">
+              <label className="block text-sm font-semibold text-slate-200 mb-2">
                 Company Name <span className="text-emerald-400">*</span>
               </label>
               <input
                 type="text"
                 {...register('companyName')}
                 placeholder="e.g. Reliance Industries, Tata Consultancy Services, Apple Inc."
-                className="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors text-sm"
+                className="w-full px-4 py-3.5 rounded-xl bg-slate-950/60 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm font-medium shadow-inner"
               />
               {errors.companyName && (
-                <p className="text-xs text-rose-400 mt-1.5">{errors.companyName.message}</p>
+                <p className="text-xs text-rose-400 mt-2 font-medium">{errors.companyName.message}</p>
               )}
             </div>
 
@@ -231,12 +240,12 @@ export const ReportForm: React.FC = () => {
 
             <SampleSelector onSelectSample={handleSampleSelect} />
 
-            <div className="pt-4 border-t border-slate-800 flex items-center justify-end">
+            <div className="pt-6 border-t border-slate-800/80 flex items-center justify-end">
               <Button
                 type="submit"
                 variant="primary"
                 isLoading={step !== 'idle' && step !== 'completed' && step !== 'error'}
-                className="w-full sm:w-auto"
+                className="w-full sm:w-auto min-w-[200px]"
               >
                 Generate Report
               </Button>

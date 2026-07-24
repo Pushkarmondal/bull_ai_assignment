@@ -2,14 +2,14 @@ import React from 'react';
 
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: 'emerald' | 'cyan' | 'purple' | 'amber';
+  variant?: 'emerald' | 'cyan' | 'teal' | 'amber';
 }
 
 export const Badge: React.FC<BadgeProps> = ({ children, variant = 'emerald' }) => {
   const styles = {
     emerald: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
     cyan: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
-    purple: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+    teal: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
     amber: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
   };
 

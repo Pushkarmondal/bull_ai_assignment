@@ -1,38 +1,108 @@
 @import "tailwindcss";
 
+:root {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
 body {
-  background-color: #0f172a;
+  background-color: #060913;
   color: #f8fafc;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Ambient Radial Glow */
+.bg-ambient-glow {
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(0, 166, 153, 0.15) 0%, transparent 65%),
+    radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 15% 70%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
 }
 
 /* Custom Glassmorphism effects */
 .glass-card {
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(13, 20, 36, 0.7);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 25px 35px -10px rgba(0, 0, 0, 0.6), 0 0 20px -5px rgba(16, 185, 129, 0.2);
 }
 
 .gradient-teal {
-  background: linear-gradient(135deg, #008779 0%, #05a08e 100%);
+  background: linear-gradient(135deg, #009688 0%, #05a08e 50%, #028476 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #00a699 100%);
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  display: inline;
+}
+
+.gradient-teal-hover {
+  background: linear-gradient(135deg, #00b3a2 0%, #06b8a3 50%, #039b8b 100%);
 }
 
 .gradient-glow {
-  box-shadow: 0 0 25px -5px rgba(0, 135, 121, 0.4);
+  box-shadow: 0 0 25px -5px rgba(0, 166, 153, 0.4);
 }
 
 /* Premium Frosted Glass Backdrop for Modals */
 .glass-backdrop {
-  background-color: rgba(15, 23, 42, 0.45) !important;
+  background-color: rgba(6, 9, 19, 0.65) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
 }
 
 .glass-modal {
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(11, 17, 32, 0.95);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px -5px rgba(0, 166, 153, 0.2);
+}
+
+/* Micro-animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 2.5s infinite;
 }
