@@ -25,14 +25,14 @@ html.light body {
 
 /* Ambient Radial Glow - Default & Dark Mode */
 .bg-ambient-glow {
-  background-image: 
+  background-image:
     radial-gradient(circle at 50% 0%, rgba(0, 166, 153, 0.16) 0%, transparent 65%),
     radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.12) 0%, transparent 50%),
     radial-gradient(circle at 15% 70%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
 }
 
 html.light .bg-ambient-glow {
-  background-image: 
+  background-image:
     radial-gradient(circle at 50% 0%, rgba(0, 166, 153, 0.08) 0%, transparent 65%),
     radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.06) 0%, transparent 50%),
     radial-gradient(circle at 15% 70%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
@@ -117,18 +117,38 @@ html.light .glass-modal {
 
 /* Micro-animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 @keyframes pulseGlow {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { transform: translateY(-5px); }
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .animate-float {
@@ -147,7 +167,10 @@ html.light .glass-modal {
 .shimmer-effect::after {
   content: '';
   position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transform: translateX(-100%);
   animation: shimmer 2.5s infinite;
