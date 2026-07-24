@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{company.name}} Equity Research Report</title>
+  <style>
+    {{{cssContent}}}
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PAGE 1 ==================== -->
+  <div class="page">
+    <div class="header-row">
+      <div class="brand-section">
+        <h2>Retail Equity Research</h2>
+        <h1>{{company.name}}</h1>
+        <p style="font-size: 9px; color: #555; font-weight: bold;">Sector: {{company.sector}} &nbsp;|&nbsp; Date: {{generatedDate}}</p>
+      </div>
+      <div class="logo-section">
+        <div class="geojit-logo">
+          <div class="logo-icon">G</div>
+          <div class="logo-text">GEOJIT</div>
+        </div>
+        <div class="tagline">PEOPLE YOU PROSPER WITH</div>
+        <div class="rating-badge rating-{{company.rating}}">{{company.rating}}</div>
+      </div>
+    </div>
+
+    <!-- Key Metrics Bar -->
+    <div class="meta-bar">
+      <div class="meta-item">Target Price: <strong>Rs. {{company.targetPrice}}</strong></div>
+      <div class="meta-item">CMP: <strong>Rs. {{company.cmp}}</strong></div>
+      <div class="meta-item">Expected Return: <strong>{{expectedReturn}}</strong></div>
+      <div class="meta-item">Time Frame: <strong>{{company.timeFrame}}</strong></div>
+    </div>
+
+    <div class="content-grid">
+      <!-- Left Sidebar -->
+      <div class="sidebar">
+        <!-- Company Data -->
+        <div class="section-title">Company Data</div>
+        <table>
+          <tr><td>Market Cap (Rs.cr)</td><td class="text-right">{{company.marketCap}}</td></tr>
+          <tr><td>52 Week High - Low</td><td class="text-right">{{company.weekHighLow}}</td></tr>
+          <tr><td>Enterprise Value (Rs.cr)</td><td class="text-right">{{company.enterpriseValue}}</td></tr>
+          <tr><td>Outstanding Shares (cr)</td><td class="text-right">{{company.outstandingShares}}</td></tr>
+          <tr><td>Free Float (%)</td><td class="text-right">{{company.freeFloat}}</td></tr>
+          <tr><td>Dividend Yield (%)</td><td class="text-right">{{company.dividendYield}}</td></tr>
+          <tr><td>6m average volume (cr)</td><td class="text-right">{{company.avgVolume6m}}</td></tr>
+          <tr><td>Beta</td><td class="text-right">{{company.beta}}</td></tr>
+          <tr><td>Face value (Rs.)</td><td class="text-right">{{company.faceValue}}</td></tr>
+        </table>
+
+        <!-- Shareholding -->
+        <div class="section-title">Shareholding (%)</div>
+        <table>
+          <thead>
+            <tr><th>Category</th><th class="text-right">Q3FY25</th><th class="text-right">Q4FY25</th><th class="text-right">Q1FY26</th></tr>
+          </thead>
+          <tbody>
+            {{#each shareholding}}
+            <tr>
+              <td>{{category}}</td>
+              <td class="text-right">{{q1}}</td>
+              <td class="text-right">{{q2}}</td>
+              <td class="text-right">{{q3}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+
+        <!-- Price Performance -->
+        <div class="section-title">Price Performance</div>
+        <table>
+          <thead>
+            <tr><th>Period</th><th class="text-right">3 Month</th><th class="text-right">6 Month</th><th class="text-right">1 Year</th></tr>
+          </thead>
+          <tbody>
+            {{#each pricePerformance}}
+            <tr>
+              <td>{{period}}</td>
+              <td class="text-right">{{absoluteReturn}}</td>
+              <td class="text-right">{{sensexReturn}}</td>
+              <td class="text-right">{{relativeReturn}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+
+        <!-- Forecast Summary Table -->
+        <div class="section-title">Y.E March (Rs cr)</div>
+        <table>
+          <thead>
+            <tr><th>Metric</th><th class="text-right">FY25A</th><th class="text-right">FY26E</th><th class="text-right">FY27E</th></tr>
+          </thead>
+          <tbody>
+            {{#each forecastSummary}}
+            <tr>
+              <td>{{metric}}</td>
+              <td class="text-right">{{fyA}}</td>
+              <td class="text-right">{{fyE1}}</td>
+              <td class="text-right">{{fyE2}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Main Column -->
+      <div class="main-column">
+        <!-- Business Summary -->
+        <div class="summary-box">
+          <h3>Blinkit propels growth; valuation limits upside</h3>
+          <p style="text-align: justify; margin-bottom: 6px;">{{businessSummary}}</p>
+          <ul class="bullet-list">
+            {{#each highlights}}
+            <li>{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+
+        <!-- Outlook & Valuation -->
+        <div class="summary-box">
+          <div class="section-title">Outlook & Valuation</div>
+          <p style="text-align: justify; margin-top: 4px;">{{outlook}}</p>
+        </div>
+
+        <!-- Quarterly Financials Consolidated -->
+        <div class="section-title">Quarterly Financials Consolidated</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Rs.cr</th>
+              <th class="text-right">Q1FY26</th>
+              <th class="text-right">Q1FY25</th>
+              <th class="text-right">YoY (%)</th>
+              <th class="text-right">Q4FY25</th>
+              <th class="text-right">QoQ (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each quarterlyFinancials}}
+            <tr>
+              <td><strong>{{metric}}</strong></td>
+              <td class="text-right">{{currentQ}}</td>
+              <td class="text-right">{{prevYearQ}}</td>
+              <td class="text-right">{{yoyGrowth}}</td>
+              <td class="text-right">{{prevQ}}</td>
+              <td class="text-right">{{qoqGrowth}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>GEOJIT RESEARCH REPORT</span>
+      <span>www.geojit.com</span>
+      <span>Page 1 of 4</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 2 ==================== -->
+  <div class="page">
+    <div class="header-row">
+      <div class="brand-section">
+        <h2>Key Highlights & Chart Analysis</h2>
+        <h1 style="font-size: 18px;">{{company.name}}</h1>
+      </div>
+      <div class="logo-section">
+        <div class="geojit-logo"><div class="logo-icon">G</div><div class="logo-text">GEOJIT</div></div>
+      </div>
+    </div>
+
+    <div class="section-title">Executive Key Highlights</div>
+    <ul class="bullet-list" style="margin-bottom: 10px;">
+      {{#each highlights}}
+      <li>{{this}}</li>
+      {{/each}}
+    </ul>
+
+    <!-- 2x2 Chart Grid -->
+    <div class="section-title">Financial Trends & Margins</div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <img src="{{charts.revenueChartUrl}}" alt="Revenue Chart" />
+      </div>
+      <div class="chart-card">
+        <img src="{{charts.govChartUrl}}" alt="GOV Chart" />
+      </div>
+      <div class="chart-card">
+        <img src="{{charts.ebitdaChartUrl}}" alt="EBITDA Chart" />
+      </div>
+      <div class="chart-card">
+        <img src="{{charts.patChartUrl}}" alt="PAT Chart" />
+      </div>
+    </div>
+
+    <!-- Change in Estimates -->
+    <div class="section-title">Change in Estimates</div>
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2">Year / Rs cr</th>
+          <th colspan="2" class="text-center">Old estimates</th>
+          <th colspan="2" class="text-center">New estimates</th>
+          <th colspan="2" class="text-center">Change (%)</th>
+        </tr>
+        <tr>
+          <th class="text-right">FY26E</th>
+          <th class="text-right">FY27E</th>
+          <th class="text-right">FY26E</th>
+          <th class="text-right">FY27E</th>
+          <th class="text-right">FY26E</th>
+          <th class="text-right">FY27E</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each changeInEstimates}}
+        <tr>
+          <td><strong>{{metric}}</strong></td>
+          <td class="text-right">{{oldFY26E}}</td>
+          <td class="text-right">{{oldFY27E}}</td>
+          <td class="text-right">{{newFY26E}}</td>
+          <td class="text-right">{{newFY27E}}</td>
+          <td class="text-right">{{changeFY26E}}</td>
+          <td class="text-right">{{changeFY27E}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <div class="footer-bar">
+      <span>GEOJIT RESEARCH REPORT</span>
+      <span>www.geojit.com</span>
+      <span>Page 2 of 4</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 3 ==================== -->
+  <div class="page">
+    <div class="header-row">
+      <div class="brand-section">
+        <h2>Consolidated Financial Statements</h2>
+        <h1 style="font-size: 18px;">{{company.name}}</h1>
+      </div>
+      <div class="logo-section">
+        <div class="geojit-logo"><div class="logo-icon">G</div><div class="logo-text">GEOJIT</div></div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <!-- Profit & Loss -->
+      <div>
+        <div class="section-title">Profit & Loss</div>
+        <table>
+          <thead>
+            <tr><th>Y.E March (Rs Cr)</th><th class="text-right">FY23A</th><th class="text-right">FY24A</th><th class="text-right">FY25A</th><th class="text-right">FY26E</th><th class="text-right">FY27E</th></tr>
+          </thead>
+          <tbody>
+            {{#each profitAndLoss}}
+            <tr>
+              <td>{{particulars}}</td>
+              <td class="text-right">{{fy23A}}</td>
+              <td class="text-right">{{fy24A}}</td>
+              <td class="text-right">{{fy25A}}</td>
+              <td class="text-right">{{fy26E}}</td>
+              <td class="text-right">{{fy27E}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+
+        <!-- Cashflow -->
+        <div class="section-title" style="margin-top: 10px;">Cashflow</div>
+        <table>
+          <thead>
+            <tr><th>Y.E March (Rs Cr)</th><th class="text-right">FY23A</th><th class="text-right">FY24A</th><th class="text-right">FY25A</th><th class="text-right">FY26E</th><th class="text-right">FY27E</th></tr>
+          </thead>
+          <tbody>
+            {{#each cashflow}}
+            <tr>
+              <td>{{particulars}}</td>
+              <td class="text-right">{{fy23A}}</td>
+              <td class="text-right">{{fy24A}}</td>
+              <td class="text-right">{{fy25A}}</td>
+              <td class="text-right">{{fy26E}}</td>
+              <td class="text-right">{{fy27E}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Balance Sheet & Ratios -->
+      <div>
+        <div class="section-title">Balance Sheet</div>
+        <table>
+          <thead>
+            <tr><th>Y.E March (Rs Cr)</th><th class="text-right">FY23A</th><th class="text-right">FY24A</th><th class="text-right">FY25A</th><th class="text-right">FY26E</th><th class="text-right">FY27E</th></tr>
+          </thead>
+          <tbody>
+            {{#each balanceSheet}}
+            <tr>
+              <td>{{particulars}}</td>
+              <td class="text-right">{{fy23A}}</td>
+              <td class="text-right">{{fy24A}}</td>
+              <td class="text-right">{{fy25A}}</td>
+              <td class="text-right">{{fy26E}}</td>
+              <td class="text-right">{{fy27E}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+
+        <!-- Financial Ratios -->
+        <div class="section-title" style="margin-top: 10px;">Ratios</div>
+        <table>
+          <thead>
+            <tr><th>Y.E March</th><th class="text-right">FY23A</th><th class="text-right">FY24A</th><th class="text-right">FY25A</th><th class="text-right">FY26E</th><th class="text-right">FY27E</th></tr>
+          </thead>
+          <tbody>
+            {{#each ratios}}
+            <tr>
+              <td>{{particulars}}</td>
+              <td class="text-right">{{fy23A}}</td>
+              <td class="text-right">{{fy24A}}</td>
+              <td class="text-right">{{fy25A}}</td>
+              <td class="text-right">{{fy26E}}</td>
+              <td class="text-right">{{fy27E}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>GEOJIT RESEARCH REPORT</span>
+      <span>www.geojit.com</span>
+      <span>Page 3 of 4</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 4 ==================== -->
+  <div class="page">
+    <div class="header-row">
+      <div class="brand-section">
+        <h2>Recommendation History & Disclosures</h2>
+        <h1 style="font-size: 18px;">{{company.name}}</h1>
+      </div>
+      <div class="logo-section">
+        <div class="geojit-logo"><div class="logo-icon">G</div><div class="logo-text">GEOJIT</div></div>
+      </div>
+    </div>
+
+    <div class="section-title">Recommendation Summary - (last 3 years)</div>
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Rating</th><th class="text-right">Target Price (Rs.)</th></tr>
+      </thead>
+      <tbody>
+        {{#each recommendationHistory}}
+        <tr>
+          <td>{{date}}</td>
+          <td><strong>{{rating}}</strong></td>
+          <td class="text-right">{{targetPrice}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <div class="section-title" style="margin-top: 10px;">Investment Rating Criteria</div>
+    <table>
+      <thead>
+        <tr><th>Ratings</th><th>Large caps</th><th>Midcaps</th><th>Small Caps</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Buy</strong></td><td>Upside is above 10%</td><td>Upside is above 15%</td><td>Upside is above 20%</td></tr>
+        <tr><td><strong>Accumulate</strong></td><td>-</td><td>Upside is between 10%-15%</td><td>Upside is between 10%-20%</td></tr>
+        <tr><td><strong>Hold</strong></td><td>Upside is between 0% - 10%</td><td>Upside is between 0%-10%</td><td>Upside is between 0%-10%</td></tr>
+        <tr><td><strong>Reduce/Sell</strong></td><td>Downside is more than 0%</td><td>Downside is more than 0%</td><td>Downside is more than 0%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="footer-text" style="margin-top: 10px;">
+      <p><strong>DISCLAIMER & DISCLOSURES</strong></p>
+      <p style="margin-top: 4px;">Certification: The research analyst certifies that all views expressed in this report reflect personal views about the subject company. This report is issued by Geojit Investments Ltd (GIL), a SEBI registered Research Entity (SEBI Reg No: INH000019567).</p>
+      <p style="margin-top: 4px;">Standard Warning: Investment in securities market are subject to market risks. Read all related documents carefully before investing.</p>
+      <p style="margin-top: 4px;">Geojit Investments Ltd. Registered Office: 7th Floor 34/659-P, Civil Line Road, Padivattom, Kochi-682024, Kerala, India. Website: www.geojit.com</p>
+    </div>
+
+    <div class="footer-bar">
+      <span>GEOJIT RESEARCH REPORT</span>
+      <span>www.geojit.com</span>
+      <span>Page 4 of 4</span>
+    </div>
+  </div>
+
+</body>
+</html>

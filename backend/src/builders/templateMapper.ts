@@ -1,0 +1,96 @@
+import { RawExtractedReportData, GeneratedCharts, ReportTemplateData } from "../types/report";
+import { dashIfNull } from "../utils/helpers";
+
+export function mapToTemplateData(
+  reportData: RawExtractedReportData,
+  charts: GeneratedCharts
+): ReportTemplateData {
+  return {
+    company: {
+      ...reportData.company,
+      cmp: dashIfNull(reportData.company.cmp),
+      targetPrice: dashIfNull(reportData.company.targetPrice),
+      marketCap: dashIfNull(reportData.company.marketCap),
+      enterpriseValue: dashIfNull(reportData.company.enterpriseValue),
+      outstandingShares: dashIfNull(reportData.company.outstandingShares),
+      beta: dashIfNull(reportData.company.beta),
+      dividendYield: dashIfNull(reportData.company.dividendYield),
+      freeFloat: dashIfNull(reportData.company.freeFloat),
+    },
+    businessSummary: reportData.businessSummary || "",
+    outlook: reportData.outlook || "",
+    recommendation: reportData.recommendation || reportData.company.rating || "HOLD",
+    highlights: reportData.highlights || [],
+    shareholding: (reportData.shareholding || []).map((row) => ({
+      category: row.category,
+      q1: dashIfNull(row.q1),
+      q2: dashIfNull(row.q2),
+      q3: dashIfNull(row.q3),
+    })),
+    pricePerformance: (reportData.pricePerformance || []).map((row) => ({
+      period: row.period,
+      absoluteReturn: dashIfNull(row.absoluteReturn),
+      sensexReturn: dashIfNull(row.sensexReturn),
+      relativeReturn: dashIfNull(row.relativeReturn),
+    })),
+    forecastSummary: (reportData.forecastSummary || []).map((row) => ({
+      metric: row.metric,
+      fyA: dashIfNull(row.fyA),
+      fyE1: dashIfNull(row.fyE1),
+      fyE2: dashIfNull(row.fyE2),
+    })),
+    quarterlyFinancials: (reportData.quarterlyFinancials || []).map((row) => ({
+      metric: row.metric,
+      currentQ: dashIfNull(row.currentQ),
+      prevYearQ: dashIfNull(row.prevYearQ),
+      yoyGrowth: dashIfNull(row.yoyGrowth),
+      prevQ: dashIfNull(row.prevQ),
+      qoqGrowth: dashIfNull(row.qoqGrowth),
+    })),
+    changeInEstimates: (reportData.changeInEstimates || []).map((row) => ({
+      metric: row.metric,
+      oldFY26E: dashIfNull(row.oldFY26E),
+      oldFY27E: dashIfNull(row.oldFY27E),
+      newFY26E: dashIfNull(row.newFY26E),
+      newFY27E: dashIfNull(row.newFY27E),
+      changeFY26E: dashIfNull(row.changeFY26E),
+      changeFY27E: dashIfNull(row.changeFY27E),
+    })),
+    profitAndLoss: (reportData.profitAndLoss || []).map((row) => ({
+      particulars: row.particulars,
+      fy23A: dashIfNull(row.fy23A),
+      fy24A: dashIfNull(row.fy24A),
+      fy25A: dashIfNull(row.fy25A),
+      fy26E: dashIfNull(row.fy26E),
+      fy27E: dashIfNull(row.fy27E),
+    })),
+    balanceSheet: (reportData.balanceSheet || []).map((row) => ({
+      particulars: row.particulars,
+      fy23A: dashIfNull(row.fy23A),
+      fy24A: dashIfNull(row.fy24A),
+      fy25A: dashIfNull(row.fy25A),
+      fy26E: dashIfNull(row.fy26E),
+      fy27E: dashIfNull(row.fy27E),
+    })),
+    cashflow: (reportData.cashflow || []).map((row) => ({
+      particulars: row.particulars,
+      fy23A: dashIfNull(row.fy23A),
+      fy24A: dashIfNull(row.fy24A),
+      fy25A: dashIfNull(row.fy25A),
+      fy26E: dashIfNull(row.fy26E),
+      fy27E: dashIfNull(row.fy27E),
+    })),
+    ratios: (reportData.ratios || []).map((row) => ({
+      particulars: row.particulars,
+      fy23A: dashIfNull(row.fy23A),
+      fy24A: dashIfNull(row.fy24A),
+      fy25A: dashIfNull(row.fy25A),
+      fy26E: dashIfNull(row.fy26E),
+      fy27E: dashIfNull(row.fy27E),
+    })),
+    recommendationHistory: reportData.recommendationHistory || [],
+    charts,
+    expectedReturn: (reportData.company as any).expectedReturn || "+10%",
+    generatedDate: reportData.company.reportDate || new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
+  };
+}
