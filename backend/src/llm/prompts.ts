@@ -5,10 +5,14 @@ CRITICAL INSTRUCTIONS:
 1. Return ONLY valid JSON.
 2. NEVER include markdown formatting like \`\`\`json or explanation text.
 3. If a field or metric is unavailable in the context, return null (do NOT invent false numbers).
-4. Strictly follow the structure requested in the user prompt.`;
+4. Strictly align all text with the TARGET COMPANY specified. Do NOT hallucinate third-party brands or companies not present in the document.
+5. RECOMMENDATION & HEADLINE CONSISTENCY:
+   - If rating is BUY or ACCUMULATE, the headline MUST convey positive growth and upside (e.g., 'Strong operational momentum drives long-term growth'). NEVER write 'valuation limits upside' for a BUY recommendation.
+   - If rating is HOLD or REDUCE, the headline should reflect valuation constraints or moderate upside.
+6. OUTLOOK & VALUATION: Must focus on forward-looking institutional catalysts, margin trajectory, capex plans, segment expansion, or key risks. DO NOT repeat the past quarterly revenue or EBITDA figures already stated in business summary.`;
 
 export function buildExtractionPrompt(companyName: string, documentText: string): string {
-  return `Extract financial data and research insights for target company: "${companyName}".
+  return `Extract financial data and research insights strictly for target company: "${companyName}".
 
 Financial Context Document Content:
 ----------------------------------------
@@ -19,30 +23,31 @@ Return a single JSON object matching this schema structure:
 {
   "company": {
     "name": "${companyName}",
-    "sector": "Internet & Catalogue Retail",
+    "sector": "Extract actual sector from document for ${companyName} (e.g. Information Technology for TCS)",
     "cmp": 306,
     "targetPrice": 337,
-    "rating": "HOLD",
+    "rating": "BUY",
     "earnings": "Q1FY26 Result Update",
-    "marketCap": 295735,
-    "enterpriseValue": 294166,
-    "outstandingShares": 965.0,
-    "beta": 1.0,
+    "marketCap": null,
+    "enterpriseValue": null,
+    "outstandingShares": null,
+    "beta": null,
     "dividendYield": null,
-    "freeFloat": 71.9,
-    "weekHighLow": "314 - 190",
-    "avgVolume6m": 6.1,
-    "faceValue": 1.0,
-    "bloombergCode": "ETERNAL:IN",
-    "nseCode": "ETERNAL",
-    "bseCode": "543320",
-    "sensex": 81334,
+    "freeFloat": null,
+    "weekHighLow": null,
+    "avgVolume6m": null,
+    "faceValue": null,
+    "bloombergCode": null,
+    "nseCode": null,
+    "bseCode": null,
+    "sensex": null,
     "timeFrame": "12 Months",
     "reportDate": "29th July, 2025"
   },
+  "headline": "Punchy 1-sentence investment thesis headline strictly for ${companyName} (consistent with recommendation)",
   "businessSummary": "Executive summary paragraph explaining business performance...",
-  "outlook": "Outlook & Valuation paragraph detailing target price justification...",
-  "recommendation": "HOLD",
+  "outlook": "Forward-looking strategic catalysts, margin trajectory, capex plans, or risks for ${companyName} (DO NOT repeat revenue/EBITDA figures)...",
+  "recommendation": "BUY",
   "highlights": [
     "Key highlight bullet point 1...",
     "Key highlight bullet point 2..."

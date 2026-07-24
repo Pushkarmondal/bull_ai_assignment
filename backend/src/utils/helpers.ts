@@ -23,6 +23,13 @@ export function dashIfNull(value: any): string {
   return value.toString();
 }
 
+export function naIfNull(value: any): string {
+  if (value === null || value === undefined || value === "" || value === "N/A" || value === "null" || value === "-") {
+    return "N/A";
+  }
+  return value.toString();
+}
+
 export function safeNumber(value: any, defaultValue: number = 0): number {
   if (typeof value === "number" && !isNaN(value)) return value;
   if (!value) return defaultValue;

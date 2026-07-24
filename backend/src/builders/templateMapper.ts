@@ -1,5 +1,5 @@
 import type { RawExtractedReportData, GeneratedCharts, ReportTemplateData } from "../types/report";
-import { dashIfNull } from "../utils/helpers";
+import { dashIfNull, naIfNull } from "../utils/helpers";
 
 export function mapToTemplateData(
   reportData: RawExtractedReportData,
@@ -10,13 +10,17 @@ export function mapToTemplateData(
       ...reportData.company,
       cmp: dashIfNull(reportData.company.cmp),
       targetPrice: dashIfNull(reportData.company.targetPrice),
-      marketCap: dashIfNull(reportData.company.marketCap),
-      enterpriseValue: dashIfNull(reportData.company.enterpriseValue),
-      outstandingShares: dashIfNull(reportData.company.outstandingShares),
-      beta: dashIfNull(reportData.company.beta),
-      dividendYield: dashIfNull(reportData.company.dividendYield),
-      freeFloat: dashIfNull(reportData.company.freeFloat),
+      marketCap: naIfNull(reportData.company.marketCap),
+      enterpriseValue: naIfNull(reportData.company.enterpriseValue),
+      outstandingShares: naIfNull(reportData.company.outstandingShares),
+      beta: naIfNull(reportData.company.beta),
+      dividendYield: naIfNull(reportData.company.dividendYield),
+      freeFloat: naIfNull(reportData.company.freeFloat),
+      weekHighLow: naIfNull(reportData.company.weekHighLow),
+      avgVolume6m: naIfNull(reportData.company.avgVolume6m),
+      faceValue: naIfNull(reportData.company.faceValue),
     },
+    headline: reportData.headline || `${reportData.company.name} demonstrates operational momentum`,
     businessSummary: reportData.businessSummary || "",
     outlook: reportData.outlook || "",
     recommendation: reportData.recommendation || reportData.company.rating || "HOLD",
@@ -90,7 +94,7 @@ export function mapToTemplateData(
     })),
     recommendationHistory: reportData.recommendationHistory || [],
     charts,
-    expectedReturn: (reportData.company as any).expectedReturn || "+10%",
+    expectedReturn: (reportData.company as any).expectedReturn || "+10.1%",
     generatedDate: reportData.company.reportDate || new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
   };
 }

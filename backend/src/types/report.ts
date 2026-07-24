@@ -100,6 +100,7 @@ export interface ChartSeriesData {
 
 export interface RawExtractedReportData {
   company: CompanyInfo;
+  headline?: string | null;
   businessSummary: string | null;
   outlook: string | null;
   recommendation: string | null;
@@ -127,6 +128,7 @@ export interface GeneratedCharts {
 
 export interface ReportTemplateData {
   company: CompanyInfo;
+  headline: string;
   businessSummary: string;
   outlook: string;
   recommendation: string;

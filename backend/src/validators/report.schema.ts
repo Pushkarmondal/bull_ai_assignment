@@ -27,28 +27,28 @@ export const companyInfoSchema = z.object({
 });
 
 export const shareholdingRowSchema = z.object({
-  category: z.string(),
+  category: z.string().default("Other"),
   q1: nullableStringOrNumber,
   q2: nullableStringOrNumber,
   q3: nullableStringOrNumber,
 });
 
 export const pricePerformanceRowSchema = z.object({
-  period: z.string(),
+  period: z.string().default("-"),
   absoluteReturn: nullableStringOrNumber,
   sensexReturn: nullableStringOrNumber,
   relativeReturn: nullableStringOrNumber,
 });
 
 export const financialForecastSummaryRowSchema = z.object({
-  metric: z.string(),
+  metric: z.string().default("-"),
   fyA: nullableStringOrNumber,
   fyE1: nullableStringOrNumber,
   fyE2: nullableStringOrNumber,
 });
 
 export const quarterlyFinancialRowSchema = z.object({
-  metric: z.string(),
+  metric: z.string().default("-"),
   currentQ: nullableStringOrNumber,
   prevYearQ: nullableStringOrNumber,
   yoyGrowth: nullableStringOrNumber,
@@ -57,7 +57,7 @@ export const quarterlyFinancialRowSchema = z.object({
 });
 
 export const statementRowSchema = z.object({
-  particulars: z.string(),
+  particulars: z.string().default("-"),
   fy23A: nullableStringOrNumber,
   fy24A: nullableStringOrNumber,
   fy25A: nullableStringOrNumber,
@@ -66,7 +66,7 @@ export const statementRowSchema = z.object({
 });
 
 export const ratioRowSchema = z.object({
-  particulars: z.string(),
+  particulars: z.string().default("-"),
   fy23A: nullableStringOrNumber,
   fy24A: nullableStringOrNumber,
   fy25A: nullableStringOrNumber,
@@ -75,7 +75,7 @@ export const ratioRowSchema = z.object({
 });
 
 export const changeInEstimatesRowSchema = z.object({
-  metric: z.string(),
+  metric: z.string().default("-"),
   oldFY26E: nullableStringOrNumber,
   oldFY27E: nullableStringOrNumber,
   newFY26E: nullableStringOrNumber,
@@ -85,27 +85,45 @@ export const changeInEstimatesRowSchema = z.object({
 });
 
 export const recommendationHistoryRowSchema = z.object({
-  date: z.string(),
-  rating: z.string(),
-  targetPrice: z.union([z.string(), z.number()]),
+  date: z.string().nullable().optional(),
+  rating: z.string().nullable().optional(),
+  targetPrice: nullableStringOrNumber,
 });
+
+const chartNumberArray = z
+  .array(z.union([z.number(), z.string(), z.null()]))
+  .transform((arr) =>
+    arr.map((val) => {
+      if (typeof val === "number") return val;
+      if (typeof val === "string") {
+        const parsed = parseFloat(val);
+        return isNaN(parsed) ? 0 : parsed;
+      }
+      return 0;
+    })
+  )
+  .optional();
 
 export const chartSeriesDataSchema = z
   .object({
-    labels: z.array(z.string()).default([]),
-    revenue: z.array(z.number()).default([]),
-    revenueGrowth: z.array(z.number()).optional(),
-    gov: z.array(z.number()).optional(),
-    govGrowth: z.array(z.number()).optional(),
-    ebitda: z.array(z.number()).default([]),
-    ebitdaMargin: z.array(z.number()).optional(),
-    pat: z.array(z.number()).default([]),
-    patMargin: z.array(z.number()).optional(),
+    labels: z
+      .array(z.union([z.string(), z.null()]))
+      .transform((arr) => arr.map((v) => v || ""))
+      .default([]),
+    revenue: chartNumberArray,
+    revenueGrowth: chartNumberArray,
+    gov: chartNumberArray,
+    govGrowth: chartNumberArray,
+    ebitda: chartNumberArray,
+    ebitdaMargin: chartNumberArray,
+    pat: chartNumberArray,
+    patMargin: chartNumberArray,
   })
   .optional();
 
 export const rawExtractedReportSchema = z.object({
   company: companyInfoSchema,
+  headline: z.string().nullable().optional(),
   businessSummary: z.string().nullable().optional(),
   outlook: z.string().nullable().optional(),
   recommendation: z.string().nullable().optional(),

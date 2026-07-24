@@ -40,11 +40,22 @@ export async function generateReportPipeline(
   } else if (ext === ".txt") {
     extractedText = await parseTxtFile(filePath);
   } else {
-    throw new Error(`Unsupported file type: ${ext}`);
+    const error: any = new Error(`Unsupported file type: ${ext}`);
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Validate extracted text content length
+  const cleanedText = (extractedText || "").trim();
+  if (!cleanedText || cleanedText.length < 30) {
+    logger.warn(`Rejected empty/invalid file '${originalFilename}' (${cleanedText.length} chars)`);
+    const error: any = new Error("Uploaded file is empty or contains insufficient text content. Please upload a valid earnings release or financial report.");
+    error.statusCode = 400;
+    throw error;
   }
 
   // Step 2: AI extraction
-  const rawReportData = await extractFinancialData(companyName, extractedText);
+  const rawReportData = await extractFinancialData(companyName, cleanedText);
 
   // Step 3: Normalize report & missing value fallbacks
   const normalizedReport = buildNormalizedReport(rawReportData);

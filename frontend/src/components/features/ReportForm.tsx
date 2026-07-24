@@ -18,6 +18,26 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+function deriveCompanyNameFromFilename(filename: string): string {
+  const baseName = filename.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ').trim();
+  const lower = baseName.toLowerCase();
+
+  if (lower.includes('tcs') || lower.includes('tata consultancy')) return 'Tata Consultancy Services';
+  if (lower.includes('reliance')) return 'Reliance Industries';
+  if (lower.includes('zomato') || lower.includes('eternal')) return 'Eternal Ltd.';
+  if (lower.includes('apple')) return 'Apple Inc.';
+  if (lower.includes('l&t') || lower.includes('larsen')) return 'Larsen & Toubro';
+  if (lower.includes('infosys')) return 'Infosys';
+  if (lower.includes('hdfc')) return 'HDFC Bank';
+  if (lower.includes('icici')) return 'ICICI Bank';
+
+  // Title case formatting for generic file names
+  return baseName
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 export const ReportForm: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string>('');
@@ -34,12 +54,27 @@ export const ReportForm: React.FC = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      companyName: 'Eternal Ltd.',
+      companyName: '',
     },
   });
 
+  const handleFileSelect = (file: File | null) => {
+    setSelectedFile(file);
+    setFileError('');
+    setApiError('');
+
+    if (file) {
+      const derived = deriveCompanyNameFromFilename(file.name);
+      if (derived) {
+        setValue('companyName', derived, { shouldValidate: true });
+      }
+    } else {
+      setValue('companyName', '', { shouldValidate: true });
+    }
+  };
+
   const handleSampleSelect = (companyName: string, file: File) => {
-    setValue('companyName', companyName);
+    setValue('companyName', companyName, { shouldValidate: true });
     setSelectedFile(file);
     setFileError('');
     setApiError('');
@@ -56,7 +91,6 @@ export const ReportForm: React.FC = () => {
     setResult(null);
 
     try {
-      // Simulate visual step updates for better UX feedback
       setStep('parsing');
       await new Promise((res) => setTimeout(res, 600));
 
@@ -88,6 +122,7 @@ export const ReportForm: React.FC = () => {
     setResult(null);
     setApiError('');
     setSelectedFile(null);
+    setValue('companyName', '');
   };
 
   return (
@@ -180,7 +215,7 @@ export const ReportForm: React.FC = () => {
               <input
                 type="text"
                 {...register('companyName')}
-                placeholder="e.g. Eternal Ltd., Reliance Industries, Apple Inc."
+                placeholder="e.g. Reliance Industries, Tata Consultancy Services, Apple Inc."
                 className="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors text-sm"
               />
               {errors.companyName && (
@@ -190,10 +225,7 @@ export const ReportForm: React.FC = () => {
 
             <UploadZone
               selectedFile={selectedFile}
-              onFileSelect={(file) => {
-                setSelectedFile(file);
-                setFileError('');
-              }}
+              onFileSelect={handleFileSelect}
               error={fileError}
             />
 

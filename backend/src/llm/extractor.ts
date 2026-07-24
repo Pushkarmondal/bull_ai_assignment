@@ -9,6 +9,13 @@ export async function extractFinancialData(
   companyName: string,
   documentText: string
 ): Promise<RawExtractedReportData> {
+  const cleaned = (documentText || "").trim();
+  if (!cleaned || cleaned.length < 30) {
+    const err: any = new Error("Uploaded file is empty or contains insufficient text content.");
+    err.statusCode = 400;
+    throw err;
+  }
+
   const groq = getGroqClient();
 
   if (!groq) {
@@ -17,8 +24,8 @@ export async function extractFinancialData(
   }
 
   try {
-    logger.info(`Sending document text (${documentText.length} chars) to Groq API...`);
-    const promptText = buildExtractionPrompt(companyName, documentText);
+    logger.info(`Sending document text (${cleaned.length} chars) to Groq API...`);
+    const promptText = buildExtractionPrompt(companyName, cleaned);
 
     const chatCompletion = await groq.chat.completions.create({
       messages: [
@@ -32,7 +39,7 @@ export async function extractFinancialData(
 
     const responseContent = chatCompletion.choices[0]?.message?.content;
     if (!responseContent) {
-      throw new Error("Empty response from Groq AI model");
+      throw new Error("Empty response received from Groq AI model");
     }
 
     // Clean any accidental markdown quotes if present
@@ -44,8 +51,8 @@ export async function extractFinancialData(
     logger.info("Successfully extracted and validated JSON from Groq AI");
     return validatedData as RawExtractedReportData;
   } catch (error: any) {
-    logger.error(`Groq AI extraction failed: ${error.message}. Falling back to sample structure.`);
-    return getSampleExtractedData(companyName);
+    logger.error(`Groq AI extraction failed: ${error.message}`);
+    throw new Error(`AI financial extraction failed: ${error.message}`);
   }
 }
 
