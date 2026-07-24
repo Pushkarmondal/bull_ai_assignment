@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 import handlebars from "handlebars";
 import fs from "fs/promises";
 import path from "path";
-import { ReportTemplateData } from "../types/report";
+import type { ReportTemplateData } from "../types/report";
 import { REPORT_DIR, TEMPLATE_DIR } from "../config/constants";
 import { logger } from "../utils/logger";
 
@@ -39,7 +39,7 @@ export async function generatePdfReport(
 
   try {
     const page = await browser.newPage();
-    await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+    await page.setContent(htmlContent, { waitUntil: "domcontentloaded" });
 
     // Print A4 PDF
     await page.pdf({

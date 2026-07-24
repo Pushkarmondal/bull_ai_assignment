@@ -1,4 +1,4 @@
-import { RawExtractedReportData, GeneratedCharts, ReportTemplateData } from "../types/report";
+import type { RawExtractedReportData, GeneratedCharts, ReportTemplateData } from "../types/report";
 import { dashIfNull } from "../utils/helpers";
 
 export function mapToTemplateData(

@@ -10,7 +10,7 @@ import { SampleSelector } from './SampleSelector';
 import { ProgressStepper } from './ProgressStepper';
 import { PreviewModal } from './PreviewModal';
 import { generateReport } from '../../services/api';
-import type{ GenerationStep, GenerateReportResponse } from '../../types';
+import type { GenerationStep, GenerateReportResponse } from '../../types';
 
 const formSchema = z.object({
   companyName: z.string().min(2, 'Company name must be at least 2 characters'),

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Sparkles, FileText, Table } from 'lucide-react';
-import { SampleDoc } from '../../types';
+import type { SampleDoc } from '../../types';
 
 interface SampleSelectorProps {
   onSelectSample: (companyName: string, file: File) => void;

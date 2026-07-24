@@ -1,7 +1,4 @@
-import axios from 'axios';
-import type{ GenerateReportResponse } from '../types';
-
-const API_BASE = '';
+import type { GenerateReportResponse } from '../types';
 
 export async function generateReport(
   companyName: string,
@@ -11,15 +8,16 @@ export async function generateReport(
   formData.append('companyName', companyName);
   formData.append('file', file);
 
-  const response = await axios.post<GenerateReportResponse>(
-    `${API_BASE}/api/report/generate`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-  );
+  const response = await fetch('/api/report/generate', {
+    method: 'POST',
+    body: formData,
+  });
 
-  return response.data;
+  const data = await response.json().catch(() => ({ success: false, error: `HTTP Error ${response.status}` }));
+
+  if (!response.ok || !data.success) {
+    throw new Error(data.error || `Server responded with status ${response.status}`);
+  }
+
+  return data;
 }

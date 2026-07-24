@@ -1,6 +1,6 @@
 import { ChartJSNodeCanvas } from "chartjs-node-canvas";
-import { ChartConfiguration } from "chart.js";
-import { ChartSeriesData, GeneratedCharts } from "../types/report";
+import type{ ChartConfiguration } from "chart.js";
+import type{ ChartSeriesData, GeneratedCharts } from "../types/report";
 import { logger } from "../utils/logger";
 import path from "path";
 import fs from "fs/promises";
