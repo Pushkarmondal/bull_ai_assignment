@@ -51,8 +51,54 @@ export async function extractFinancialData(
     logger.info("Successfully extracted and validated JSON from Groq AI");
     return validatedData as RawExtractedReportData;
   } catch (error: any) {
-    logger.error(`Groq AI extraction failed: ${error.message}`);
-    throw new Error(`AI financial extraction failed: ${error.message}`);
+    // Log full technical details to server logs
+    logger.error(`Groq AI extraction detailed error: ${error.message}`, {
+      status: error.status || error.statusCode,
+      stack: error.stack,
+    });
+
+    const rawMsg = (error.message || "").toLowerCase();
+    const status = error.status || error.statusCode;
+
+    let userFriendlyMessage = "Financial data extraction encountered an issue while processing your document. Please try again.";
+    let statusCode = 500;
+
+    if (
+      status === 429 ||
+      rawMsg.includes("429") ||
+      rawMsg.includes("rate limit") ||
+      rawMsg.includes("quota") ||
+      rawMsg.includes("tpm") ||
+      rawMsg.includes("rpd")
+    ) {
+      userFriendlyMessage =
+        "Daily AI processing limit reached. The report could not be generated because the AI service has reached its daily token quota. Please try again after 1 hour, or configure another AI provider.";
+      statusCode = 429;
+    } else if (
+      status === 401 ||
+      rawMsg.includes("401") ||
+      rawMsg.includes("api key") ||
+      rawMsg.includes("unauthorized") ||
+      rawMsg.includes("invalid key")
+    ) {
+      userFriendlyMessage =
+        "AI service authentication failed. Please verify your GROQ_API_KEY environment variable configuration.";
+      statusCode = 401;
+    } else if (
+      status === 503 ||
+      status === 500 ||
+      rawMsg.includes("503") ||
+      rawMsg.includes("overloaded") ||
+      rawMsg.includes("service_unavailable")
+    ) {
+      userFriendlyMessage =
+        "The AI processing service is currently overloaded or temporarily unavailable. Please try again in a few moments.";
+      statusCode = 503;
+    }
+
+    const customError: any = new Error(userFriendlyMessage);
+    customError.statusCode = statusCode;
+    throw customError;
   }
 }
 
